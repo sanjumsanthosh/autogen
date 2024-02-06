@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import Any, Callable, Dict, List, Literal, Optional, Union
 from pydantic.dataclasses import dataclass
 from dataclasses import asdict, field
-
+import os
 
 @dataclass
 class Message(object):
@@ -34,11 +34,12 @@ class Message(object):
 class Skill(object):
     title: str
     file_name: str
-    content: str
+    content: Optional[str] = None
     id: Optional[str] = None
     description: Optional[str] = None
     timestamp: Optional[str] = None
     user_id: Optional[str] = None
+    python_file: Optional[str] = None
 
     def __post_init__(self):
         if self.id is None:
@@ -47,6 +48,10 @@ class Skill(object):
             self.timestamp = datetime.now().isoformat()
         if self.user_id is None:
             self.user_id = "default"
+        if self.python_file is not None:
+            current_dir = os.path.dirname(os.path.realpath(__file__))
+            with open(os.path.join(current_dir, f"utils\\skill_samples\\{self.python_file}"), "r") as file:
+                self.content = file.read()
 
     def dict(self):
         result = asdict(self)

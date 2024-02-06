@@ -19,6 +19,8 @@ class AutoGenChatManager:
         if flow_config is None:
             flow_config = get_default_agent_config(scratch_dir)
 
+        
+
         flow = AutoGenWorkFlowManager(config=flow_config, history=history, work_dir=scratch_dir)
         message_text = message.content.strip()
 
